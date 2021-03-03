@@ -18,30 +18,30 @@ public class VendasApplication {
         return args -> {
 
             System.out.println("***********SALVANDO CLIENTES");
-            clientesDao.Salvar(new Cliente(null,"LUDMILLA REIS PINHEIRO"));
+            clientesDao.save(new Cliente(null,"LUDMILLA REIS PINHEIRO"));
 
-            clientesDao.Salvar(new Cliente(null,"KETELLIN FREITAS NASCIMENTO"));
+            clientesDao.save(new Cliente(null,"KETELLIN FREITAS NASCIMENTO"));
 
-            List<Cliente> todosClientes = clientesDao.obterTodos();
+            List<Cliente> todosClientes = clientesDao.findAll();
             todosClientes.forEach(System.out::println);
 
             System.out.println("***********ATUALIZANDO CLIENTES");
             todosClientes.forEach(cliente -> {
                 cliente.setNome(cliente.getNome() + " atualizado.");
-                clientesDao.atualizar(cliente);
+                clientesDao.save(cliente);
             });
 
-            todosClientes = clientesDao.obterTodos();
+            todosClientes = clientesDao.findAll();
             todosClientes.forEach(System.out::println);
 
             System.out.println("***********CONSULTANDO CLIENTES POR NOME");
-            clientesDao.buscarPorNome("REIS").forEach(System.out::println);
+            clientesDao.findByNomeLike("REIS").forEach(System.out::println);
 
             System.out.println("***********DELETAR TODOS");
-            clientesDao.obterTodos().forEach(c -> {
-                clientesDao.apagar(c);
+            clientesDao.findAll().forEach(c -> {
+                clientesDao.delete(c);
             });
-            todosClientes = clientesDao.obterTodos();
+            todosClientes = clientesDao.findAll();
             if(todosClientes.isEmpty()){
                 System.out.println("Nenhum cliente encontrado!!!");
             }
