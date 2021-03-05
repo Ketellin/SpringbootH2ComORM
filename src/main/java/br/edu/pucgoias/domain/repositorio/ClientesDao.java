@@ -2,6 +2,9 @@ package br.edu.pucgoias.domain.repositorio;
 
 import br.edu.pucgoias.domain.entity.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -16,27 +19,24 @@ Retirar o EntityManager pois ele está encapsulado dentro do JpaRepository
  */
 public interface ClientesDao extends JpaRepository <Cliente, Integer>{
 
-    /**
-     * Exemplo de Query Methods do Spring boot
-     * Convensão: findByNome_Propriedade_BuscarLike sendo que Nome_Propriedade_Buscar é o
-     * filtro que se deseja aplicar o filtro. Na classe Cliente temos a propriedade "nome".
-     * Escrever findByNomeLike é o mesmo que escrever SELECT C FROM Cliente WHERE C.nome LIKE :nome
-     * O compilador irá criar o jpql automaticamente
-     * @param nome
-     * @return
-     */
-    List<Cliente> findByNomeLike(String nome);
-
     /*
-    Os parametros devem aparecer na ordem escrita no Query Method
+    Consultas usando hql
      */
-    //List<Cliente> findByNomeOrIdOOrderById(String nome, Integer id);
-
+    //@Query(value = "SELECT C FROM Cliente C WHERE C.nome LIKE :nome")
     /*
-    O findOne deve ser usado para chaves como CPF, matricula, etc para que seja
-    retornado apenas um objeto. Se retornar uma lista, ocorrerá excessão
+    Consultas usando sql nativo
      */
-    //Cliente findOneByNome(String nome);
+    @Query(value = " SELECT * FROM cliente C WHERE C.nome LIKE '%:nome%' ", nativeQuery = true)
+    List<Cliente> enontrarPorNome(@Param("nome") String nome);
 
+    //Query Method
+    void deleteByNome(String nome);
+
+    
+    @Query(value = " delete from Cliente c where c.nome = :nome")
+    @Modifying //deve ser colocada todas as vezes que ocorrer atualizações na base de dados
+    void apagarPorNome(String nome);
     boolean existsByNome(String nome);
+
+
 }
