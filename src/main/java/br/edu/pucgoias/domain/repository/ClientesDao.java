@@ -1,4 +1,4 @@
-package br.edu.pucgoias.domain.repositorio;
+package br.edu.pucgoias.domain.repository;
 
 import br.edu.pucgoias.domain.entity.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,17 +26,19 @@ public interface ClientesDao extends JpaRepository <Cliente, Integer>{
     /*
     Consultas usando sql nativo
      */
-    @Query(value = " SELECT * FROM cliente C WHERE C.nome LIKE '%:nome%' ", nativeQuery = true)
+    @Query(value = " SELECT * FROM cliente C WHERE C.nome LIKE :nome ", nativeQuery = true)
     List<Cliente> enontrarPorNome(@Param("nome") String nome);
 
     //Query Method
     void deleteByNome(String nome);
 
-    
+
     @Query(value = " delete from Cliente c where c.nome = :nome")
     @Modifying //deve ser colocada todas as vezes que ocorrer atualizações na base de dados
     void apagarPorNome(String nome);
+
     boolean existsByNome(String nome);
 
-
+    @Query(" select c from Cliente c left join fetch c.pedidos p where c.id = :id ")
+    Cliente findClienteFetchPedidos(@Param("id") Integer id);
 }

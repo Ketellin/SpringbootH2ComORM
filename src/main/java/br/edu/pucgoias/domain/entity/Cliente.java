@@ -1,6 +1,7 @@
 package br.edu.pucgoias.domain.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 //Anotação usada para mapear uma classe para uma tabela no banco via JPA
 //Aqui estamos dizendo para o JPA escanear essa classe e registrar ela como uma tabela do BD
@@ -16,12 +17,27 @@ public class Cliente {
     @Column(name = "nome", length = 100)
     private String nome;
 
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    /*
+    O mappedBy é usado pois não há chave de pedido em cliente. Mas como precisamos fazer um join com
+    os pedidos, temos que mapear qual a entidade tem a chave do cliente.
+     */
+    private Set<Pedido> pedidos;
+
     public Cliente() {
     }
 
     public Cliente(Integer id, String nome) {
         this.nome = nome;
         this.id = id;
+    }
+
+    public Set<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(Set<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 
     public Integer getId() {
