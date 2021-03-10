@@ -1,24 +1,29 @@
 package br.edu.pucgoias.rest.controller;
 
+import br.edu.pucgoias.domain.entity.Cliente;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller //Passará a ser gerenciada pelo container do Springboot
-//é a url base para acessar a classe
-//Toda requisição feita para /api/clientes será respondida pelo ClienteController
+/*
+O RequestMapping mapeia uma rota, através de um verbo http(RequestMethod.GET),
+e passa a tratar a requisição do cliente
+ */
+@Controller
 @RequestMapping("/api/clientes")
 public class ClienteController {
 
-    //url para acesso ao método. Entre chaves, é o parâmetro que deverá ser passado para o método
-    @RequestMapping(value = "/hello/{nome}", method = RequestMethod.GET)
-    //Informa que o retorno do método é o corpo da resposta da requisição
+
+    @RequestMapping(
+            value = {"/hello/{nome}","/api/hello"},//value recebe um array de strings
+            method = RequestMethod.POST, //O cliente solicita alterar o servidor
+            consumes = {"application/json", "application/xml"}, //A alteração pode ser um arquivo json ou xml.
+                                                                // Dados recebidos no servidor
+            produces = {"application/json", "application/xml"} //Servidor produz um cliente em json ou xml
+            //o cliente que fará a requisição definirá no contentType o tipo de padrão, ou seja, json ou xml
+    )
     @ResponseBody
-    //PathVariable é a anotação para definir qual variável vou receber como parâmetro
-    //Dessa maneira, a variável nome será injetada em nomeCli
-    public String helloCliente(@PathVariable("nome") String nomeCli){
+    public String helloCliente(@PathVariable("nome") String nomeCli, @RequestBody Cliente cliente){
+        //A anotação RequestBody define que o arquivo json ou xml deve ser um cliente
         return String.format("Hello %s ", nomeCli);
     }
 }
