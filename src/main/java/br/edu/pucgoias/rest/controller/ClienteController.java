@@ -1,8 +1,13 @@
 package br.edu.pucgoias.rest.controller;
 
 import br.edu.pucgoias.domain.entity.Cliente;
+import br.edu.pucgoias.domain.repository.ClientesDao;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 /*
 O RequestMapping mapeia uma rota, através de um verbo http(RequestMethod.GET),
@@ -12,18 +17,45 @@ e passa a tratar a requisição do cliente
 @RequestMapping("/api/clientes")
 public class ClienteController {
 
+    private ClientesDao clientesDao;
 
-    @RequestMapping(
-            value = {"/hello/{nome}","/api/hello"},//value recebe um array de strings
-            method = RequestMethod.POST, //O cliente solicita alterar o servidor
-            consumes = {"application/json", "application/xml"}, //A alteração pode ser um arquivo json ou xml.
-                                                                // Dados recebidos no servidor
-            produces = {"application/json", "application/xml"} //Servidor produz um cliente em json ou xml
-            //o cliente que fará a requisição definirá no contentType o tipo de padrão, ou seja, json ou xml
-    )
-    @ResponseBody
-    public String helloCliente(@PathVariable("nome") String nomeCli, @RequestBody Cliente cliente){
-        //A anotação RequestBody define que o arquivo json ou xml deve ser um cliente
-        return String.format("Hello %s ", nomeCli);
+    /*
+    A injeção do DAO acontecerá pois o springboot perceberá a anotação Controller, perceberá também
+     o controlador recebendo parâmetros e
+    instaciará clientesDao, ou usará uma instancia já pronta do container
+     */
+    public ClienteController(ClientesDao clientesDao) {
+        this.clientesDao = clientesDao;
+    }
+
+    //Por padrão o springboot trabalha com json
+
+    @GetMapping("/{id}") //Obter dados. Faz o mesmo que a anotação RequestMapping, porem com o GET definido. Veja o código.
+    @ResponseBody //Mapeará o objeto Cliente em um objeto Json. Se não for colocado, a requisição irá
+    //aguardar uma string que seria o endereço de uma página web. Como estamos trabalhando com REST, precisamos da anotação
+    public ResponseEntity getClienteById(@PathVariable Integer id){
+        //PathVariable define que o parâmetro id será recebido via requisição http, na url
+        //Se vc quiser usar o nome do parâmetro na url diferente do parâmetro no método, a anotação PathVariable
+        //deverá acompanhar o nome do parâmetro na url.
+
+        /*
+        Esse metodo não foi implementado pois ele já existe no JpaRepository que foi extendido pela
+        classe ClientesDao
+        O retorno do método é um Optional pois pode ou não existir o cliente com o id especificado
+         */
+        Optional<Cliente> cliente = clientesDao.findById(id);
+        if(cliente.isPresent()) {
+            //Representa a resposta ao cliente
+            //ResponseEntity<Cliente> responseEntity = new ResponseEntity<>(cliente.get(), HttpStatus.OK);
+            //A LINHA ACIMA EQUIVALE A
+            return ResponseEntity.ok(cliente.get());
+            //o ok retornará o código 200. O método get retornará o cliente contido em Optional
+        }
+        return ResponseEntity.notFound().build();//retornará o código 440
     }
 }
+
+/*
+OBSERVAÇÃO:
+Conseguimos testar pelo browser por ser uma requisição GET que usa url.
+ */
