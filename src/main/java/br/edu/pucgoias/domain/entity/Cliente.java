@@ -1,5 +1,7 @@
 package br.edu.pucgoias.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -17,11 +19,8 @@ public class Cliente {
     @Column(name = "nome", length = 100)
     private String nome;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-    /*
-    O mappedBy é usado pois não há chave de pedido em cliente. Mas como precisamos fazer um join com
-    os pedidos, temos que mapear qual a entidade tem a chave do cliente.
-     */
     private Set<Pedido> pedidos;
 
     public Cliente() {

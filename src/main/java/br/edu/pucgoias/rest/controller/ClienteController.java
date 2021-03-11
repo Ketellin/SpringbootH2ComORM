@@ -53,6 +53,19 @@ public class ClienteController {
         }
         return ResponseEntity.notFound().build();//retornará o código 440
     }
+
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity save(@RequestBody Cliente cliente){
+        /*
+        Não confundir ResponseBody com RequestBody. Esse último é o que entra de dados, ou seja, o corpo da
+        Requisição.
+        O primeiro é o que será retornado, ou seja, Resposta.
+         */
+        Cliente cli = clientesDao.save(cliente);
+        return ResponseEntity.ok(cli);
+
+    }
 }
 
 /*

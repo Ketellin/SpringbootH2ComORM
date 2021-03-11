@@ -11,13 +11,6 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class VendasApplication {
 
-    @Bean
-    public CommandLineRunner commandLineRunner(@Autowired ClientesDao clientesDao){
-        return args -> {
-            Cliente cliente = new Cliente(null,"KETELLIN FREITAS");
-            clientesDao.save(cliente);
-        };
-    }
 
     public static void main(String[] args) {
 
