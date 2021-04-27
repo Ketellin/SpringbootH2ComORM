@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 import java.util.Optional;
 
-@Controller
+//Assim como o @Controller, a @RestController também é usada como cotroller porem com mais funcionalidades
+//Ela já vem com a anotação @ResponseBody evitando o uso repetido.
+@RestController
 @RequestMapping("/api/pedidos")
 public class ProdutoController {
 
@@ -21,7 +23,6 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}") //Obter os dados
-    @ResponseBody
     public ResponseEntity getProdutoById(@PathVariable Integer id){
 
         Optional<Produto> pr = produtoDao.findById(id);
