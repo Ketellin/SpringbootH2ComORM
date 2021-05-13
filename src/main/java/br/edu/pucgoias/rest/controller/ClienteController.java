@@ -75,7 +75,7 @@ public class ClienteController {
      * que você escreva consultas que contenham nomes de campo.
      *
      * A API Query by Example consiste em três partes:
-     ** Probe: O exemplo real de um objeto de domínio com campos preenchidos.
+     ** Probe: O exemplo real de um objeto de domínio com campos preenchidos. Esse é o objeto que será usado como filtro
      ** ExampleMatcher: ExampleMatcher Contém detalhes sobre como combinar campos específicos.
      * Ele pode ser reutilizado em vários exemplos.
      ** Example: Um Example consiste no objeto de domínio e no ExampleMatcher. Ele é usado para criar a consulta.
@@ -83,7 +83,7 @@ public class ClienteController {
      * Origem: https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#query-by-example.introduction
      *
      * @param filtro recebe um objeto cliente com os atributos a serem usados como filtro, preenchido
-     * @return ResponseEntity que representa um código de resposta ao cliente que fez a requisição
+     * @return List<Cliente> que representa a lista correspondente ao filtro
      */
     @GetMapping("")
     public List<Cliente> find(Cliente filtro){
