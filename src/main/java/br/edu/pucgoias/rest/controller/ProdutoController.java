@@ -67,7 +67,7 @@ public class ProdutoController {
         produtoDao.findById(id).map(produtoBD ->
                 {
                     produtoDao.delete(produtoBD);
-                    return produtoBD;
+                    return Void.TYPE;
                 }
         ).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado!"));
     }

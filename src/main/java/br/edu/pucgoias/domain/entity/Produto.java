@@ -1,8 +1,16 @@
 package br.edu.pucgoias.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import lombok.*;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+
+@Getter //Estou indicando para o compilador que o lombok irá inserir os gets e sets
+@Setter // Todas essas anotations pode ser substituidas pela anotacoa @Data
+@ToString
+@EqualsAndHashCode
 @Entity
 public class Produto {
     @Id
@@ -16,27 +24,5 @@ public class Produto {
     @Column(name = "pro_preco")
     private BigDecimal precoUnitario;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public BigDecimal getPrecoUnitario() {
-        return precoUnitario;
-    }
-
-    public void setPrecoUnitario(BigDecimal precoUnitario) {
-        this.precoUnitario = precoUnitario;
-    }
 }

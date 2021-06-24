@@ -75,7 +75,8 @@ public class ClienteController {
      * que você escreva consultas que contenham nomes de campo.
      *
      * A API Query by Example consiste em três partes:
-     ** Probe: O exemplo real de um objeto de domínio com campos preenchidos. Esse é o objeto que será usado como filtro
+     ** Probe: O exemplo real de um objeto de domínio com campos preenchidos. Esse é o objeto que será usado
+     * como filtro
      ** ExampleMatcher: ExampleMatcher Contém detalhes sobre como combinar campos específicos.
      * Ele pode ser reutilizado em vários exemplos.
      ** Example: Um Example consiste no objeto de domínio e no ExampleMatcher. Ele é usado para criar a consulta.
