@@ -20,10 +20,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-@RequiredArgsConstructor //anotacao do lambok que irá gerar o construtor dos argumentos
-                        //obrigatórios, ou seja, os final, pois sao instanciados
+//RequiredArgsConstructor: anotacao do lambok que irá gerar o construtor dos argumentos
+//obrigatórios, ou seja, os final, pois sao instanciados
 //                      no momento da construcao da classe
+@Service
+@RequiredArgsConstructor
 public class PedidosServiceImpl implements PedidosService{
     public final PedidoDao pedidoDao;
     public final ClientesDao cliDao;
