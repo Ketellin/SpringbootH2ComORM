@@ -1,7 +1,10 @@
 package br.edu.pucgoias.rest.controller;
 
+import br.edu.pucgoias.domain.entity.Pedido;
+import br.edu.pucgoias.exception.PedidoNaoEncontratoException;
 import br.edu.pucgoias.exception.RegraNegocioException;
 import br.edu.pucgoias.rest.ApiErrors;
+import org.springframework.boot.context.event.ApplicationContextInitializedEvent;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -24,5 +27,12 @@ public class ApplicationControllerAdvice {
         //por causa do Handler
         String mensagemErro = exc.getMessage();
         return new ApiErrors(mensagemErro);
+    }
+
+    @ExceptionHandler(PedidoNaoEncontratoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handlePedidoNotFoundExeption(PedidoNaoEncontratoException exception){
+        return new ApiErrors(exception.getMessage());
+
     }
 }
