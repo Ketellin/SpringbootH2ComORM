@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 
@@ -19,9 +21,11 @@ public class Produto {
     private Integer id;
 
     @Column(name = "pro_descricao", length = 230)
+    @NotEmpty(message = "O campo descrição é obrigatório!")
     private String descricao;
 
     @Column(name = "pro_preco")
+    @NotNull(message = "O campo Preço é obrigatório!")
     private BigDecimal precoUnitario;
 
 

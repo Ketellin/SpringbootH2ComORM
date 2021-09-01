@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 //Assim como o @Controller, a @RestController também é usada como cotroller porem com mais funcionalidades
@@ -27,14 +28,14 @@ public class ProdutoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Produto save (@RequestBody Produto produto){
+    public Produto save (@RequestBody @Valid Produto produto){
         return produtoDao.save(produto);
 
     }
 
     @GetMapping("/{id}") //Obter os dados
     public Produto getProdutoById(@PathVariable Integer id){
-
+        System.out.println("Passou no controlador do cliente!");
         return produtoDao.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado!")
         );
@@ -51,7 +52,7 @@ public class ProdutoController {
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void atualizarProduto (@PathVariable Integer id, @RequestBody Produto produto){
+    public void atualizarProduto (@PathVariable Integer id, @RequestBody @Valid Produto produto){
         produtoDao.findById(id).map( produtoBD ->
                 {
                     produto.setId(produtoBD.getId());

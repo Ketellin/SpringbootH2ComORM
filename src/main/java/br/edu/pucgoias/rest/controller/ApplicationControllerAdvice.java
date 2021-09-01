@@ -6,9 +6,13 @@ import br.edu.pucgoias.exception.RegraNegocioException;
 import br.edu.pucgoias.rest.ApiErrors;
 import org.springframework.boot.context.event.ApplicationContextInitializedEvent;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * ControllerAdvice coloca a classe dentro do contexto do spring com o objetivo de tratar excessões
@@ -34,5 +38,17 @@ public class ApplicationControllerAdvice {
     public ApiErrors handlePedidoNotFoundExeption(PedidoNaoEncontratoException exception){
         return new ApiErrors(exception.getMessage());
 
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    //MethodArgumentNotValidException é lançada quando a validação de um argumento anotado com @Valid falha
+    public ApiErrors handleMethodNotValidException(MethodArgumentNotValidException ex){
+        List<String> errors = ex.getBindingResult() //carrega os dados de validação e o que falhou
+                .getAllErrors()
+                .stream()
+                .map(erro -> erro.getDefaultMessage())
+                .collect(Collectors.toList());
+        return new ApiErrors(errors);
     }
 }

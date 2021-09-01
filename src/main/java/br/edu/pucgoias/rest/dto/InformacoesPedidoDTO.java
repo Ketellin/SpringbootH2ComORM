@@ -12,7 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+/**
+ * Classe com o objetivo de apresentar as informações consultadas para quem consome a api
+ */
 public class InformacoesPedidoDTO {
+
     private Integer codigo;
     private String cpf;
     private String nomeCliente;

@@ -2,13 +2,14 @@ package br.edu.pucgoias.rest.controller;
 
 import br.edu.pucgoias.domain.entity.Cliente;
 import br.edu.pucgoias.domain.repository.ClientesDao;
+import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,8 +41,15 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente save(@RequestBody Cliente cliente){
-
+    public Cliente save(@RequestBody @Valid Cliente cliente){
+        /*
+        @Valid por si só não faz mais nada além de acionar a validação dos campos anotados JSR 303 de validação
+        ( @NotNull, @Email, @Size, etc ... ), ainda precisamos especificar uma estratégia do que fazer
+        com os resultados dessa validação.
+        No nosso caso, a classe que trata exceções é a classe anotada com RestControllerAdvice. Como @Valid
+        lançará exceções do tipo MethodArgumentNotValidException.class, dentro dessa classe deverá existir
+        um ExceptionHandler da classe MethodArgumentNotValidException.class
+         */
         return clientesDao.save(cliente);
 
     }
@@ -60,7 +68,7 @@ public class ClienteController {
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Integer id, @RequestBody Cliente cliente){
+    public void update(@PathVariable Integer id, @RequestBody @Valid Cliente cliente){
 
         clientesDao.findById(id).map(clienteExistente -> {
             cliente.setId(clienteExistente.getId());

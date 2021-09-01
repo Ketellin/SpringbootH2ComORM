@@ -19,4 +19,8 @@ public class ApiErrors {
         this.errors = Arrays.asList((mensagemErro)); //asList é um método estático que transformará
                                                      //mensagemErro em um ArrayList
     }
+
+    public ApiErrors(List<String> errors){
+        this.errors = errors;
+    }
 }
